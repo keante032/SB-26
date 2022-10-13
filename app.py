@@ -340,6 +340,9 @@ def add_like(msg_id):
     g.user.likes.append(liked_msg)
     db.session.commit()
 
+    if not request.referrer:
+        return redirect("/")
+
     return redirect(request.referrer)
 
 
@@ -354,6 +357,9 @@ def remove_like(msg_id):
     unliked_msg = Message.query.get_or_404(msg_id)
     g.user.likes.remove(unliked_msg)
     db.session.commit()
+
+    if not request.referrer:
+        return redirect("/")
 
     return redirect(request.referrer)
 
