@@ -143,7 +143,7 @@ class MessageViewTestCase(TestCase):
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.testuser_id
 
-            resp = c.post("/messages/1984/like", follow_redirects=True)
+            resp = c.post("/messages/add_like/1984", follow_redirects=True)
             self.assertEqual(resp.status_code, 200)
 
             likes = Likes.query.filter(Likes.message_id == 1984).all()
@@ -168,7 +168,8 @@ class MessageViewTestCase(TestCase):
             with c.session_transaction() as sess:
                 sess[CURR_USER_KEY] = self.testuser_id
 
-            resp = c.post(f"/messages/{m.id}/like", follow_redirects=True)
+            resp = c.post(
+                f"/messages/remove_like/{m.id}", follow_redirects=True)
             self.assertEqual(resp.status_code, 200)
 
             likes = Likes.query.filter(Likes.message_id == m.id).all()
@@ -184,7 +185,7 @@ class MessageViewTestCase(TestCase):
         like_count = Likes.query.count()
 
         with self.client as c:
-            resp = c.post(f"/messages/{m.id}/like", follow_redirects=True)
+            resp = c.post(f"/messages/add_like/{m.id}", follow_redirects=True)
             self.assertEqual(resp.status_code, 200)
 
             self.assertIn("Access unauthorized", str(resp.data))
