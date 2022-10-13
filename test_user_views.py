@@ -34,8 +34,8 @@ db.create_all()
 app.config['WTF_CSRF_ENABLED'] = False
 
 
-class MessageViewTestCase(TestCase):
-    """Test views for messages."""
+class UserViewTestCase(TestCase):
+    """Test views for users."""
 
     def setUp(self):
         """Create test client, add sample data."""
@@ -104,9 +104,7 @@ class MessageViewTestCase(TestCase):
         db.session.add_all([m1, m2, m3])
         db.session.commit()
 
-        l1 = Likes(user_id=self.testuser_id, message_id=9876)
-
-        db.session.add(l1)
+        self.testuser.likes.append(m3)
         db.session.commit()
 
     def test_user_show_with_likes(self):
