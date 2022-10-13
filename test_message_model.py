@@ -30,8 +30,8 @@ os.environ['DATABASE_URL'] = "postgresql:///warbler-test"
 db.create_all()
 
 
-class UserModelTestCase(TestCase):
-    """Test views for messages."""
+class MessageModelTestCase(TestCase):
+    """Test message model."""
 
     def setUp(self):
         """Create test client, add sample data."""
