@@ -222,41 +222,6 @@ def users_likes(user_id):
     return render_template('users/likes.html', user=user)
 
 
-@app.route('/users/add_like/<int:like_id>', methods=['POST'])
-def add_like(like_id):
-    """Add a like for the currently-logged-in user."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
-
-    liked_msg = Message.query.get_or_404(like_id)
-
-    if liked_msg.user_id == g.user.id:
-        flash("Users cannot like their own warbles.", "danger")
-        return redirect("/")
-
-    g.user.likes.append(liked_msg)
-    db.session.commit()
-
-    return redirect(request.referrer)
-
-
-@app.route('/users/remove_like/<int:like_id>', methods=['POST'])
-def remove_like(like_id):
-    """Add a like for the currently-logged-in user."""
-
-    if not g.user:
-        flash("Access unauthorized.", "danger")
-        return redirect("/")
-
-    unliked_msg = Message.query.get_or_404(like_id)
-    g.user.likes.remove(unliked_msg)
-    db.session.commit()
-
-    return redirect(request.referrer)
-
-
 @app.route('/users/profile', methods=["GET", "POST"])
 def profile():
     """Update profile for current user."""
@@ -356,6 +321,41 @@ def messages_destroy(message_id):
     db.session.commit()
 
     return redirect(f"/users/{g.user.id}")
+
+
+@app.route('/messages/add_like/<int:msg_id>', methods=['POST'])
+def add_like(msg_id):
+    """Add a like for the currently-logged-in user on this warble."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    liked_msg = Message.query.get_or_404(msg_id)
+
+    if liked_msg.user_id == g.user.id:
+        flash("Users cannot like their own warbles.", "danger")
+        return redirect("/")
+
+    g.user.likes.append(liked_msg)
+    db.session.commit()
+
+    return redirect(request.referrer)
+
+
+@app.route('/messages/remove_like/<int:msg_id>', methods=['POST'])
+def remove_like(msg_id):
+    """Remove a like for the currently-logged-in user on this warble."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    unliked_msg = Message.query.get_or_404(msg_id)
+    g.user.likes.remove(unliked_msg)
+    db.session.commit()
+
+    return redirect(request.referrer)
 
 
 ##############################################################################

@@ -50,7 +50,7 @@
           <p>{{ msg.text }}</p>
         </div>
         {% if msg in g.user.likes %}
-        <form method="POST" action="/users/remove_like/{{ msg.id }}" id="messages-form">
+        <form method="POST" action="/messages/remove_like/{{ msg.id }}" id="messages-form">
           <button class="
                         btn 
                         btn-sm 
@@ -60,7 +60,7 @@
         </form>
         {% elif msg.user_id == g.user.id %}
         {% else %}
-        <form method="POST" action="/users/add_like/{{ msg.id }}" id="messages-form">
+        <form method="POST" action="/messages/add_like/{{ msg.id }}" id="messages-form">
           <button class="
                 btn 
                 btn-sm 
